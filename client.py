@@ -107,11 +107,3 @@ class Client():
 
             else:
                 messagebox.showerror("Error", "Message recevied from client is empty")
-
-    # main function
-# def main():
-#
-#     root.mainloop()
-#
-# if __name__ == '__main__':
-#     main()
