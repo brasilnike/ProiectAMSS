@@ -5,16 +5,16 @@ import threading
 HOST = '127.0.0.1'
 PORT = 1234
 LISTENER_LIMIT = 5
-active_clients = [] # List of all currently connected users
+active_clients = []  # List of all currently connected users
+
 
 # Function to listen for upcoming messages from a client
 def listen_for_messages(client, username):
-
     while 1:
 
         message = client.recv(2048).decode('utf-8')
         if message != '':
-            
+
             final_msg = username + '~' + message
             send_messages_to_all(final_msg)
 
@@ -24,20 +24,18 @@ def listen_for_messages(client, username):
 
 # Function to send message to a single client
 def send_message_to_client(client, message):
-
     client.sendall(message.encode())
+
 
 # Function to send any new message to all the clients that
 # are currently connected to this server
 def send_messages_to_all(message):
-    
     for user in active_clients:
-
         send_message_to_client(user[1], message)
+
 
 # Function to handle client
 def client_handler(client):
-    
     # Server will listen for client message that will
     # Contain the username
     while 1:
@@ -51,11 +49,11 @@ def client_handler(client):
         else:
             print("Client username is empty")
 
-    threading.Thread(target=listen_for_messages, args=(client, username, )).start()
+    threading.Thread(target=listen_for_messages, args=(client, username,)).start()
+
 
 # Main function
 def main():
-
     # Creating the socket class object
     # AF_INET: we are going to use IPv4 addresses
     # SOCK_STREAM: we are using TCP packets for communication
@@ -75,11 +73,10 @@ def main():
 
     # This while loop will keep listening to client connections
     while 1:
-
         client, address = server.accept()
         print(f"Successfully connected to client {address[0]} {address[1]}")
 
-        threading.Thread(target=client_handler, args=(client, )).start()
+        threading.Thread(target=client_handler, args=(client,)).start()
 
 
 if __name__ == '__main__':
