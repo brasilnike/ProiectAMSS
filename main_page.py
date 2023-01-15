@@ -130,7 +130,5 @@ class App(customtkinter.CTk):
     def frame_5_button_event(self):
         self.select_frame_by_name("frame_5")
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+
 
