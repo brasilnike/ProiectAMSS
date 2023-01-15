@@ -20,7 +20,9 @@ SMALL_FONT = ("Helvetica", 13)
 # AF_INET: we are going to use IPv4 addresses
 # SOCK_STREAM: we are using TCP packets for communication
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-class Client():
+
+
+class Client:
     def __init__(self, root):
         super().__init__()
         self.root = root

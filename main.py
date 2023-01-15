@@ -2,6 +2,8 @@ import customtkinter
 import os
 from PIL import Image
 import client
+import kid
+import person
 import taskFrame
 
 
