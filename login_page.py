@@ -4,7 +4,7 @@ import mysql.connector
 import main_page
 
 # connecting to the database
-connectiondb = mysql.connector.connect(host="localhost", user="root", passwd="1q2w3e", database="logindb")
+connectiondb = mysql.connector.connect(host="localhost", user="root", passwd="admin", database="logindb")
 cursordb = connectiondb.cursor()
 
 

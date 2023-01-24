@@ -1,6 +1,8 @@
 import customtkinter
 import os
 from PIL import Image
+
+import calendar_frame
 import client
 import kid
 import person
@@ -55,14 +57,14 @@ class App(customtkinter.CTk):
 
         self.frame_3_button.grid(row=3, column=0, sticky="ew")
 
-        self.frame_5_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
-                                                      border_spacing=10, text="View tasks",
-                                                      fg_color="transparent", text_color=("gray10", "gray90"),
-                                                      hover_color=("gray70", "gray30"),
-                                                      anchor="w",
-                                                      command=self.frame_5_button_event)
+        self.calendar_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
+                                                       border_spacing=10, text="Calendar",
+                                                       fg_color="transparent", text_color=("gray10", "gray90"),
+                                                       hover_color=("gray70", "gray30"),
+                                                       anchor="w",
+                                                       command=self.calendar_button_event)
 
-        self.frame_5_button.grid(row=4, column=0, sticky="ew")
+        self.calendar_button.grid(row=4, column=0, sticky="ew")
 
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -88,8 +90,8 @@ class App(customtkinter.CTk):
         taskFrame.TaskFrame(self.third_frame)
 
         # create task frame
-        self.task_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-
+        self.calendar_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        calendar_frame.CalendarFrame(self.calendar_frame)
         # select default frame
         self.select_frame_by_name("home")
 
@@ -98,7 +100,7 @@ class App(customtkinter.CTk):
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         self.frame_2_button.configure(fg_color=("gray75", "gray25") if name == "frame_2" else "transparent")
         self.frame_3_button.configure(fg_color=("gray75", "gray25") if name == "frame_3" else "transparent")
-        self.frame_5_button.configure(fg_color=("gray75", "gray25") if name == "frame_task" else "transparent")
+        self.calendar_button.configure(fg_color=("gray75", "gray25") if name == "calendar_frame" else "transparent")
 
         # show selected frame
         if name == "home":
@@ -113,10 +115,10 @@ class App(customtkinter.CTk):
             self.third_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.third_frame.grid_forget()
-        if name == "frame_5":
-            self.task_frame.grid(row=0, column=1, sticky="nsew")
+        if name == "calendar_frame":
+            self.calendar_frame.grid(row=0, column=1, sticky="nsew")
         else:
-            self.task_frame.grid_forget()
+            self.calendar_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
@@ -127,8 +129,8 @@ class App(customtkinter.CTk):
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
 
-    def frame_5_button_event(self):
-        self.select_frame_by_name("frame_5")
+    def calendar_button_event(self):
+        self.select_frame_by_name("calendar_frame")
 
 
 
