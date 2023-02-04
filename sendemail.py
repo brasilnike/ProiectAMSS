@@ -31,7 +31,7 @@ class SingletonEmail(metaclass=SendEmailMeta):
           
           
     def send_email(self, email_to, text):
-        if self.connect() :
+        if self.connect():
           context = ssl.create_default_context()
           with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(self.email_from, self.password)

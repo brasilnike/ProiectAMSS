@@ -1,4 +1,7 @@
 import tkinter as tk
+import sendemail
+import task
+from task import Task
 
 DARK_GREY = '#121212'
 MEDIUM_GREY = '#1F1B24'
@@ -13,10 +16,15 @@ class TaskFrame():
     def callback(self):
         person_name = self.name_var.get()
         task_name = self.clicked.get()
+        new_task = Task.create_task(1, 2, "Finish the report", "2023-02-05", False, task.Responsibilities.KID.name)
+        #primele 2 ar trebui sa fie assignor/assignee, care sunt ID-uri care trebuiesc luate din baza de date
+        self.email_singleton.send_email("calimandaniel5@gmail.com", new_task.description + " " +new_task.level_of_responsibility)
+        #aici ar trebui sa pui emailul pe care il are assignee si toate detaliile loate in new)task
         print(person_name, task_name)
 
     def __init__(self, root):
         super().__init__()
+        self.email_singleton = sendemail.SingletonEmail()
         self.root = root
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=4)
