@@ -5,7 +5,7 @@ from PIL import Image
 import calendar_frame
 import client
 import taskFrame
-import login_page
+import journal_frame
 
 
 class App(customtkinter.CTk):
@@ -81,6 +81,15 @@ class App(customtkinter.CTk):
                                                        command=self.calendar_button_event)
 
         self.calendar_button.grid(row=4, column=0, sticky="ew")
+
+        self.journal_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
+                                                      border_spacing=10, text="Journal",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"),
+                                                      hover_color=("gray70", "gray30"),
+                                                      anchor="w",
+                                                      command=self.journal_button_event)
+
+        self.journal_button.grid(row=5, column=0, sticky="ew")
 
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -163,6 +172,8 @@ class App(customtkinter.CTk):
         # create third frame
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         taskFrame.TaskFrame(self.third_frame)
+        self.journal_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        journal_frame.JournalFrame(self.journal_frame,  self.curr_user)
 
         # create task frame
         self.calendar_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -176,6 +187,7 @@ class App(customtkinter.CTk):
         self.frame_2_button.configure(fg_color=("gray75", "gray25") if name == "frame_2" else "transparent")
         self.frame_3_button.configure(fg_color=("gray75", "gray25") if name == "frame_3" else "transparent")
         self.calendar_button.configure(fg_color=("gray75", "gray25") if name == "calendar_frame" else "transparent")
+        self.journal_button.configure(fg_color=("gray75", "gray25") if name == "journal_frame" else "transparent")
 
         # show selected frame
         if name == "home":
@@ -192,6 +204,8 @@ class App(customtkinter.CTk):
             self.third_frame.grid_forget()
         if name == "calendar_frame":
             self.calendar_frame.grid(row=0, column=1, sticky="nsew")
+        if name == "journal_frame":
+            self.journal_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.calendar_frame.grid_forget()
 
@@ -206,3 +220,6 @@ class App(customtkinter.CTk):
 
     def calendar_button_event(self):
         self.select_frame_by_name("calendar_frame")
+
+    def journal_button_event(self):
+        self.select_frame_by_name("journal_frame")
