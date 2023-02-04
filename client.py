@@ -23,8 +23,9 @@ clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 class Client:
-    def __init__(self, root):
+    def __init__(self, root, curr_user):
         super().__init__()
+        self.curr_user = curr_user
         self.root = root
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=4)
@@ -39,10 +40,11 @@ class Client:
         self.bottom_frame = tk.Frame(self.root, width=600, height=100, bg=DARK_GREY)
         self.bottom_frame.grid(row=2, column=0, sticky=tk.NSEW)
 
-        self.username_label = tk.Label(self.top_frame, text="Enter username:", font=FONT, bg=DARK_GREY, fg=WHITE)
+        self.username_label = tk.Label(self.top_frame, text="Logged as:", font=FONT, bg=DARK_GREY, fg=WHITE)
         self.username_label.pack(side=tk.LEFT, padx=10)
 
-        self.username_textbox = tk.Entry(self.top_frame, font=FONT, bg=MEDIUM_GREY, fg=WHITE, width=23)
+        self.username_textbox = tk.Label(self.top_frame, text=curr_user._instance.first_name, font=FONT, bg=DARK_GREY,
+                                         fg=WHITE)
         self.username_textbox.pack(side=tk.LEFT)
 
         self.username_button = tk.Button(self.top_frame, text="Join", font=BUTTON_FONT, bg=OCEAN_BLUE, fg=WHITE,
@@ -79,7 +81,7 @@ class Client:
         except:
             messagebox.showerror("Unable to connect to server", f"Unable to connect to server {HOST} {PORT}")
 
-        username = self.username_textbox.get()
+        username = self.username_textbox.cget("text")
         if username != '':
             clientSocket.sendall(username.encode())
         else:

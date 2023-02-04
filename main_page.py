@@ -159,7 +159,7 @@ class App(customtkinter.CTk):
 
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        client.Client(self.second_frame)
+        client.Client(self.second_frame, self.curr_user)
         # create third frame
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         taskFrame.TaskFrame(self.third_frame)
