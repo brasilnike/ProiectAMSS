@@ -9,8 +9,8 @@ import login_page
 
 
 class App(customtkinter.CTk):
-    def __init__(self, curr_user1):
-        self.curr_user = curr_user1
+    def __init__(self, curr_user):
+        self.curr_user = curr_user
         super().__init__()
 
         self.title("Home management platform.py")
@@ -162,7 +162,7 @@ class App(customtkinter.CTk):
         client.Client(self.second_frame)
         # create third frame
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        taskFrame.TaskFrame(self.third_frame)
+        taskFrame.TaskFrame(self.third_frame, self.curr_user)
 
         # create task frame
         self.calendar_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
