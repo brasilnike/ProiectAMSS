@@ -9,7 +9,7 @@ from mysql.connector import Error
 connectiondb = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
 cursordb = connectiondb.cursor()
 
 
@@ -81,7 +81,7 @@ def failed():
 def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
-    sql = "select * from usertable where username = %s and pass_user = %s"
+    sql = "select * from person where username = %s and user_password = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
     if results:

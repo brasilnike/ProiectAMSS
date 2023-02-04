@@ -37,7 +37,7 @@ def register_page(root):
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
 
     def Exit():
@@ -51,12 +51,12 @@ def register_page(root):
         if USER.get() == "" or PASS.get() == "" or FIRST_NAME.get() == "" or LAST_NAME.get() == "" or AGE.get() == "" or EMAIL.get() == "" or PHONE_NUMBER.get() == "" or GENDER.get() == "" or RESPONSABILITIES.get() == "":
             lbl_result.config(text="Please complete the required field!", fg="orange")
         else:
-            cursor.execute("SELECT * FROM `usertable` WHERE `username` = %s", [USER.get()])
+            cursor.execute("SELECT * FROM `person` WHERE `username` = %s", [USER.get()])
             if cursor.fetchone() is not None:
                 lbl_result.config(text="Username is already taken", fg="red")
             else:
                 cursor.execute(
-                    "INSERT INTO `usertable` (username, pass_user, first_name, last_name, age, email, phone_number, gender, responsibilities) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    "INSERT INTO `person` (username, user_password, first_name, last_name, age, email, phone_number, gender, responsibilities) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                     (str(USER.get()), str(PASS.get()), str(FIRST_NAME.get()), str(LAST_NAME.get()), str(AGE.get()),
                      str(EMAIL.get()), str(PHONE_NUMBER.get()), str(GENDER.get()), str(RESPONSABILITIES.get())))
                 conn.commit()
