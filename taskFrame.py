@@ -109,7 +109,7 @@ class TaskFrame():
         self.task_label.place(x=10, y=350)
 
         self.button = tk.Button(self.root, text="Demo Button", command=self.callback, font=FONT, bg=DARK_GREY, fg=WHITE)
-        self.button.place(x=180, y=650)
+        self.button.place(x=180, y=600)
         self.username_label.pack(side=tk.LEFT, padx=10)
 
         self.name_var = tk.StringVar()
