@@ -88,31 +88,63 @@ class App(customtkinter.CTk):
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="",
                                                                    image=self.large_test_image)
-        self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label.grid(row=0, column=0, columnspan=2, padx=20, pady=10)
 
         self.label0 = customtkinter.CTkLabel(self.home_frame, text="First name:",
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label0.grid(row=1, column=0, padx=20, pady=10)
 
         self.label1 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.first_name,
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label1.grid(row=1, column=1, padx=20, pady=10)
 
         self.label2 = customtkinter.CTkLabel(self.home_frame, text="Last name:",
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label2.grid(row=2, column=0, padx=20, pady=10)
 
         self.label3 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.last_name,
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label3.grid(row=2, column=1, padx=20, pady=10)
 
         self.label4 = customtkinter.CTkLabel(self.home_frame, text="Age:",
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label4.grid(row=3, column=0, padx=20, pady=10)
 
         self.label5 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.age,
-                                             font=("Arial", 25))
+                                             font=("Arial", 20))
         self.label5.grid(row=3, column=1, padx=20, pady=10)
+
+        self.label6 = customtkinter.CTkLabel(self.home_frame, text="Email:",
+                                             font=("Arial", 20))
+        self.label6.grid(row=4, column=0, padx=20, pady=10)
+
+        self.label7 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.email,
+                                             font=("Arial", 20))
+        self.label7.grid(row=4, column=1, padx=20, pady=10)
+
+        self.label8 = customtkinter.CTkLabel(self.home_frame, text="Phone number:",
+                                             font=("Arial", 20))
+        self.label8.grid(row=5, column=0, padx=20, pady=10)
+
+        self.label9 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.phone_number,
+                                             font=("Arial", 20))
+        self.label9.grid(row=5, column=1, padx=20, pady=10)
+
+        self.label10 = customtkinter.CTkLabel(self.home_frame, text="Gender:",
+                                             font=("Arial", 20))
+        self.label10.grid(row=6, column=0, padx=20, pady=10)
+
+        self.label11 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.gender,
+                                             font=("Arial", 20))
+        self.label11.grid(row=6, column=1, padx=20, pady=10)
+
+        self.label12 = customtkinter.CTkLabel(self.home_frame, text="Responsibilities:",
+                                              font=("Arial", 20))
+        self.label12.grid(row=7, column=0, padx=20, pady=10)
+
+        self.label13 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.responsibilities,
+                                              font=("Arial", 20))
+        self.label13.grid(row=7, column=1, padx=20, pady=10)
         # self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="", image=self.image_icon_image)
         # self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
         # self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="CTkButton",
