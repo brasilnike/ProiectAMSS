@@ -2,9 +2,14 @@ from tkinter import *
 import tkinter.messagebox
 import mysql.connector
 import main_page
+import register
+from mysql.connector import Error
 
 # connecting to the database
-connectiondb = mysql.connector.connect(host="localhost", user="root", passwd="admin", database="logindb")
+connectiondb = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='1q2w3e')
 cursordb = connectiondb.cursor()
 
 
@@ -42,6 +47,10 @@ def logged_destroy():
     app.mainloop()
 
 
+def register_function():
+    register.register_page(root)
+
+
 def failed_destroy():
     failed_message.destroy()
 
@@ -72,7 +81,7 @@ def failed():
 def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
-    sql = "select * from usertable where username = %s and password = %s"
+    sql = "select * from usertable where username = %s and pass_user = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
     if results:
@@ -102,12 +111,14 @@ def main_display():
     Button(root, text='Log In', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
            bg="blue", command=login).pack()
     Label(root, text="").pack()
+    Button(root, text='Register', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
+           bg="blue", command=register_function).pack()
+    Label(root, text="").pack()
     Button(root, text='Exit', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
            bg="blue", command=Exit).pack()
     Label(root, text="").pack()
 
+
 if __name__ == "__main__":
     main_display()
     root.mainloop()
-
-
