@@ -7,6 +7,7 @@ from tkinter import *
 from tkcalendar import Calendar
 import mysql.connector
 from datetime import datetime
+import json
 
 DARK_GREY = '#121212'
 MEDIUM_GREY = '#1F1B24'
@@ -22,10 +23,8 @@ class TaskFrame():
         person_name = self.name_var.get()
         task_name = self.clicked.get()
         new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.name_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
-        #primele 2 ar trebui sa fie assignor/assignee, care sunt ID-uri care trebuiesc luate din baza de date
-        self.email_singleton.send_email("calimandaniel5@gmail.com", new_task.description + " " +new_task.level_of_responsibility)
-        #aici ar trebui sa pui emailul pe care il are assignee si toate detaliile loate in new)task
-        print(person_name, task_name)
+        email_text = "You have a new task from: " + self.curr_user._instance.first_name + '. ' + "Task description: " + new_task.description + ". " + "Due date: " + new_task.due_date + ". " + "Level of responsibility: " + new_task.level_of_responsibility + "."
+        self.email_singleton.send_email(self.get_person_email(new_task.assignee), email_text)
 
     def get_person_id(self, first_name):
         conn = mysql.connector.connect(host='localhost',
@@ -39,6 +38,19 @@ class TaskFrame():
         cursor.close()
         conn.close()
         return person_id
+
+    def get_person_email(self, person_id):
+        conn = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='admin')
+        cursor = conn.cursor()
+        query = "SELECT email FROM Person WHERE PersonID = %s"
+        cursor.execute(query, [person_id])
+        email = cursor.fetchone()[0]
+        cursor.close()
+        conn.close()
+        return email
 
     def select_names(self):
         # Connect to the database
@@ -100,34 +112,31 @@ class TaskFrame():
         date = Label(self.root, text="", bg='black', fg='white')
         date.pack(pady=20)
 
-
-        self.select_names()
-
-        self.username_label = tk.Label(self.root, text="Assign task:", font=FONT, bg=DARK_GREY, fg=WHITE)
-        self.username_label.place(x=1, y=1)
-        self.task_label = tk.Label(self.root, text="Select task:", font=FONT, bg=DARK_GREY, fg=WHITE)
-        self.task_label.place(x=10, y=350)
+        self.username_label = tk.Label(self.root, text="Select person:", font=FONT, bg=DARK_GREY, fg=WHITE)
+        self.username_label.place(x=10, y=400)
+        self.task_label = tk.Label(self.root, text="Assign task:", font=FONT, bg=DARK_GREY, fg=WHITE)
+        self.task_label.place(x=10, y=300)
+        self.resp_label = tk.Label(self.root, text="Select responsibility:", font=FONT, bg=DARK_GREY, fg=WHITE)
+        self.resp_label.place(x=10, y=500)
 
         self.button = tk.Button(self.root, text="Demo Button", command=self.callback, font=FONT, bg=DARK_GREY, fg=WHITE)
         self.button.place(x=180, y=600)
-        self.username_label.pack(side=tk.LEFT, padx=10)
 
         self.name_var = tk.StringVar()
         self.name_var.set("Pick a person!")
 
         self.username_drop = tk.OptionMenu(self.root, self.name_var, *self.person_list)
         self.username_drop.pack()
-        self.username_drop.place(x=200, y=455)
+        self.username_drop.place(x=250, y=400)
 
         self.resp_var = tk.StringVar()
         self.resp_var.set("Pick responsibility!")
 
         self.resp_drop = tk.OptionMenu(self.root, self.resp_var, *self.responsibilities_list)
         self.resp_drop.pack()
-        self.resp_drop.place(x=200, y=555)
-
+        self.resp_drop.place(x=250, y=500)
 
         self.clicked = tk.StringVar()
         self.task = tk.Entry(self.root, textvariable=self.clicked, font=FONT, bg=MEDIUM_GREY, fg=WHITE, width=23)
         self.task.pack()
-        self.task.place(x=200, y=350)
+        self.task.place(x=250, y=300)
