@@ -4,11 +4,12 @@ import mysql.connector
 import main_page
 import register
 from mysql.connector import Error
+
 # connecting to the database
 connectiondb = mysql.connector.connect(host='localhost',
-                                         database='amss2',
-                                         user='user',
-                                         password='Password1!')
+                                       database='logindb',
+                                       user='root',
+                                       password='1q2w3e')
 cursordb = connectiondb.cursor()
 
 
@@ -45,11 +46,10 @@ def logged_destroy():
     app = main_page.App()
     app.mainloop()
 
+
 def register_function():
-   # root2.destroy()
-    root.destroy()
-    app=register.App()
-    app.mainloop()
+    register.register_page(root)
+
 
 def failed_destroy():
     failed_message.destroy()
@@ -81,7 +81,7 @@ def failed():
 def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
-    sql = "select * from usertable where username = %s and password = %s"
+    sql = "select * from usertable where username = %s and pass_user = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
     if results:
@@ -118,8 +118,7 @@ def main_display():
            bg="blue", command=Exit).pack()
     Label(root, text="").pack()
 
+
 if __name__ == "__main__":
     main_display()
     root.mainloop()
-
-
