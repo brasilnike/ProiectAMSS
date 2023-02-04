@@ -53,3 +53,5 @@ Temporary Items
 *.pyc
 *.pyo
 
+Lib/site-packages/*
+
