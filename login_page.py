@@ -2,9 +2,13 @@ from tkinter import *
 import tkinter.messagebox
 import mysql.connector
 import main_page
-
+import register
+from mysql.connector import Error
 # connecting to the database
-connectiondb = mysql.connector.connect(host="localhost", user="root", passwd="admin", database="logindb")
+connectiondb = mysql.connector.connect(host='localhost',
+                                         database='amss2',
+                                         user='user',
+                                         password='Password1!')
 cursordb = connectiondb.cursor()
 
 
@@ -41,6 +45,11 @@ def logged_destroy():
     app = main_page.App()
     app.mainloop()
 
+def register_function():
+   # root2.destroy()
+    root.destroy()
+    app=register.App()
+    app.mainloop()
 
 def failed_destroy():
     failed_message.destroy()
@@ -101,6 +110,9 @@ def main_display():
     Label(root, text="").pack()
     Button(root, text='Log In', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
            bg="blue", command=login).pack()
+    Label(root, text="").pack()
+    Button(root, text='Register', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
+           bg="blue", command=register_function).pack()
     Label(root, text="").pack()
     Button(root, text='Exit', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
            bg="blue", command=Exit).pack()
