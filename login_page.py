@@ -4,6 +4,9 @@ import mysql.connector
 import main_page
 import register
 from mysql.connector import Error
+from parent import Parent
+from kid import Kid
+from connected_user import ConnectedUser
 
 # connecting to the database
 connectiondb = mysql.connector.connect(host='localhost',
@@ -11,6 +14,8 @@ connectiondb = mysql.connector.connect(host='localhost',
                                        user='root',
                                        password='admin')
 cursordb = connectiondb.cursor()
+
+curr_user = None
 
 
 def login():
@@ -43,7 +48,8 @@ def logged_destroy():
     logged_message.destroy()
     root2.destroy()
     root.destroy()
-    app = main_page.App()
+    global curr_user
+    app = main_page.App(curr_user)
     app.mainloop()
 
 
@@ -84,6 +90,9 @@ def login_verification():
     sql = "select * from person where username = %s and user_password = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
+    global curr_user
+    curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
+                                   results[0][7], results[0][8])
     if results:
         for i in results:
             logged()
