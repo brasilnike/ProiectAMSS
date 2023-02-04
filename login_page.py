@@ -90,13 +90,14 @@ def login_verification():
     sql = "select * from usertable where username = %s and pass_user = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
-    global curr_user
-    curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
-                                   results[0][7], results[0][8])
+
     if results:
         for i in results:
             logged()
             break
+        global curr_user
+        curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
+                                  results[0][7], results[0][8])
     else:
         failed()
 
