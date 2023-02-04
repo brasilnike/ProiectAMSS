@@ -3,6 +3,9 @@ import tkinter.messagebox as tkMessageBox
 import mysql.connector
 from mysql.connector import Error
 
+responsibilities_list = ["Parent", "Parent without driving license", "Over 18 with driving license",
+                         "Over 18 without driving license", "Kid"]
+
 
 def register_page(root):
     root_register = Toplevel(root)
@@ -54,7 +57,8 @@ def register_page(root):
             else:
                 cursor.execute(
                     "INSERT INTO `usertable` (username, pass_user, first_name, last_name, age, email, phone_number, gender, responsibilities) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (str(USER.get()), str(PASS.get()), str(FIRST_NAME.get()), str(LAST_NAME.get()), str(AGE.get()), str(EMAIL.get()), str(PHONE_NUMBER.get()), str(GENDER.get()), str(RESPONSABILITIES.get())))
+                    (str(USER.get()), str(PASS.get()), str(FIRST_NAME.get()), str(LAST_NAME.get()), str(AGE.get()),
+                     str(EMAIL.get()), str(PHONE_NUMBER.get()), str(GENDER.get()), str(RESPONSABILITIES.get())))
                 conn.commit()
                 USER.set("")
                 PASS.set("")
@@ -116,7 +120,7 @@ def register_page(root):
     phone_no.grid(row=7, column=1)
     gender = Entry(RegisterFrame, font=('arial', 20), textvariable=GENDER, width=15)
     gender.grid(row=8, column=1)
-    responsibilities = Entry(RegisterFrame, font=('arial', 20), textvariable=RESPONSABILITIES, width=15)
+    responsibilities = OptionMenu(RegisterFrame, RESPONSABILITIES, *responsibilities_list)
     responsibilities.grid(row=9, column=1)
     # ========================================BUTTON WIDGETS=========================
     btn_register = Button(RegisterFrame, font=('arial', 20), text="Register", command=Register)
