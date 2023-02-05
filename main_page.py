@@ -24,7 +24,7 @@ class App(customtkinter.CTk):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "theme_images")
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "CustomTkinter_logo_single.png")),
                                                  size=(26, 26))
-        self.large_test_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "large_test_image.png")),
+        self.large_test_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "picture1.png")),
                                                        size=(500, 150))
         self.image_icon_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "image_icon_light.png")),
                                                        size=(20, 20))
@@ -37,6 +37,12 @@ class App(customtkinter.CTk):
         self.add_user_image = customtkinter.CTkImage(
             light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
             dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
+        self.journal_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "journal_dark.png")),
+            dark_image=Image.open(os.path.join(image_path, "journal_light.png")), size=(20, 20))
+        self.view_task_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "view_task_dark.png")),
+            dark_image=Image.open(os.path.join(image_path, "view_task_light.png")), size=(20, 20))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -77,7 +83,7 @@ class App(customtkinter.CTk):
                                                          border_spacing=10, text="View tasks",
                                                          fg_color="transparent", text_color=("gray10", "gray90"),
                                                          hover_color=("gray70", "gray30"),
-                                                         anchor="w",
+                                                         image=self.view_task_image, anchor="w",
                                                          command=self.view_tasks_button_event)
 
         self.view_tasks_button.grid(row=4, column=0, sticky="ew")
@@ -86,7 +92,7 @@ class App(customtkinter.CTk):
                                                       border_spacing=10, text="Journal",
                                                       fg_color="transparent", text_color=("gray10", "gray90"),
                                                       hover_color=("gray70", "gray30"),
-                                                      anchor="w",
+                                                      image=self.journal_image, anchor="w",
                                                       command=self.journal_button_event)
 
         self.journal_button.grid(row=5, column=0, sticky="ew")
