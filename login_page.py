@@ -15,7 +15,7 @@ from connected_user import ConnectedUser
 connectiondb = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
 cursordb = connectiondb.cursor()
 
 curr_user = None
@@ -126,8 +126,8 @@ def login_verification():
     if results:
         for i in results:
             global curr_user
-            curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
-                                      results[0][7], results[0][8])
+            curr_user = ConnectedUser(results[0][3], results[0][4], results[0][5], results[0][6], results[0][7],
+                                      results[0][8], results[0][9])
             logged_destroy()
             break
     else:

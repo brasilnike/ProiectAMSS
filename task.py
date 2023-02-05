@@ -24,7 +24,7 @@ class Task:
     @classmethod
     def create_task(cls, assignor, assignee, description, due_date, is_Complete, level_of_responsibility):
         connection = mysql.connector.connect(
-            host="localhost", user="root", passwd="admin", database="logindb"
+            host="localhost", user="root", passwd="1q2w3e", database="logindb"
         )
 
         cursor = connection.cursor()
@@ -40,7 +40,7 @@ class Task:
     @classmethod
     def get_task(cls, task_id):
         connection = mysql.connector.connect(
-            host="localhost", user="root", passwd="admin", database="logindb"
+            host="localhost", user="root", passwd="1q2w3e", database="logindb"
         )
 
         cursor = connection.cursor()
