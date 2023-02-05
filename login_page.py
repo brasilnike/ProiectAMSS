@@ -15,7 +15,7 @@ from connected_user import ConnectedUser
 connectiondb = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
 cursordb = connectiondb.cursor()
 
 curr_user = None

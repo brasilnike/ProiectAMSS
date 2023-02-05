@@ -2,10 +2,10 @@ import customtkinter
 import os
 from PIL import Image
 
-import calendar_frame
 import client
 import taskFrame
 import journal_frame
+import view_tasks_frame
 
 
 class App(customtkinter.CTk):
@@ -73,14 +73,14 @@ class App(customtkinter.CTk):
 
         self.frame_3_button.grid(row=3, column=0, sticky="ew")
 
-        self.calendar_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
-                                                       border_spacing=10, text="Calendar",
-                                                       fg_color="transparent", text_color=("gray10", "gray90"),
-                                                       hover_color=("gray70", "gray30"),
-                                                       anchor="w",
-                                                       command=self.calendar_button_event)
+        self.view_tasks_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
+                                                         border_spacing=10, text="View tasks",
+                                                         fg_color="transparent", text_color=("gray10", "gray90"),
+                                                         hover_color=("gray70", "gray30"),
+                                                         anchor="w",
+                                                         command=self.view_tasks_button_event)
 
-        self.calendar_button.grid(row=4, column=0, sticky="ew")
+        self.view_tasks_button.grid(row=4, column=0, sticky="ew")
 
         self.journal_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
                                                       border_spacing=10, text="Journal",
@@ -140,11 +140,11 @@ class App(customtkinter.CTk):
         self.label9.grid(row=5, column=1, padx=20, pady=10)
 
         self.label10 = customtkinter.CTkLabel(self.home_frame, text="Gender:",
-                                             font=("Arial", 20))
+                                              font=("Arial", 20))
         self.label10.grid(row=6, column=0, padx=20, pady=10)
 
         self.label11 = customtkinter.CTkLabel(self.home_frame, text=self.curr_user._instance.gender,
-                                             font=("Arial", 20))
+                                              font=("Arial", 20))
         self.label11.grid(row=6, column=1, padx=20, pady=10)
 
         self.label12 = customtkinter.CTkLabel(self.home_frame, text="Responsibilities:",
@@ -173,11 +173,10 @@ class App(customtkinter.CTk):
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         taskFrame.TaskFrame(self.third_frame, self.curr_user)
         self.journal_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        journal_frame.JournalFrame(self.journal_frame,  self.curr_user)
+        journal_frame.JournalFrame(self.journal_frame, self.curr_user)
+        self.view_tasks_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        view_tasks_frame.ViewTasksFrame(self.view_tasks_frame)
 
-        # create task frame
-        self.calendar_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        calendar_frame.CalendarFrame(self.calendar_frame)
         # select default frame
         self.select_frame_by_name("home")
 
@@ -186,8 +185,8 @@ class App(customtkinter.CTk):
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         self.frame_2_button.configure(fg_color=("gray75", "gray25") if name == "frame_2" else "transparent")
         self.frame_3_button.configure(fg_color=("gray75", "gray25") if name == "frame_3" else "transparent")
-        self.calendar_button.configure(fg_color=("gray75", "gray25") if name == "calendar_frame" else "transparent")
         self.journal_button.configure(fg_color=("gray75", "gray25") if name == "journal_frame" else "transparent")
+        self.view_tasks_button.configure(fg_color=("gray75", "gray25") if name == "view_tasks" else "transparent")
 
         # show selected frame
         if name == "home":
@@ -202,12 +201,14 @@ class App(customtkinter.CTk):
             self.third_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.third_frame.grid_forget()
-        if name == "calendar_frame":
-            self.calendar_frame.grid(row=0, column=1, sticky="nsew")
         if name == "journal_frame":
             self.journal_frame.grid(row=0, column=1, sticky="nsew")
         else:
-            self.calendar_frame.grid_forget()
+            self.journal_frame.grid_forget()
+        if name == "view_tasks":
+            self.view_tasks_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.view_tasks_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
@@ -218,8 +219,8 @@ class App(customtkinter.CTk):
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
 
-    def calendar_button_event(self):
-        self.select_frame_by_name("calendar_frame")
-
     def journal_button_event(self):
         self.select_frame_by_name("journal_frame")
+
+    def view_tasks_button_event(self):
+        self.select_frame_by_name("view_tasks")
