@@ -17,11 +17,8 @@ FONT = ("Helvetica", 17)
 BUTTON_FONT = ("Helvetica", 15)
 SMALL_FONT = ("Helvetica", 13)
 
-
 class TaskFrame():
     def callback(self):
-        person_name = self.name_var.get()
-        task_name = self.clicked.get()
         new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.name_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
         email_text = "You have a new task from: " + self.curr_user._instance.first_name + '. ' + "Task description: " + new_task.description + ". " + "Due date: " + new_task.due_date + ". " + "Level of responsibility: " + new_task.level_of_responsibility + "."
         self.email_singleton.send_email(self.get_person_email(new_task.assignee), email_text)
@@ -59,24 +56,14 @@ class TaskFrame():
                                        user='root',
                                        password='admin')
         cursor = cnx.cursor()
-
-        # Select all names from the Persons table
         query = "SELECT first_name FROM Person"
         cursor.execute(query)
-
-        # Fetch all names from the result set
         names = cursor.fetchall()
-
-        # Store the names in a list
         names_list = []
         for name in names:
             names_list.append(name[0])
-
-        # Close the cursor and connection
         cursor.close()
         cnx.close()
-
-        # Print the list of names
         return names_list
 
     def __init__(self, root, curr_user):
@@ -98,17 +85,12 @@ class TaskFrame():
         self.responsibilities_list = ["Parent", "Parent without driving license", "Over 18 with driving license",
                          "Over 18 without driving license", "Kid"]
         self.tkc = Calendar(self.root, selectmode="day", year=2023, month=1, date=1)
-        # display on main window
         self.tkc.pack(pady=10)
-
-        # getting date from the calendar
         def fetch_date():
             date.config(text="Selected Date is: " + datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"))
 
         but = Button(self.root, text="Select Date", command=fetch_date, bg="black", fg='white')
-        # displaying button on the main display
         but.pack()
-        # Label for showing date on main display
         date = Label(self.root, text="", bg='black', fg='white')
         date.pack(pady=20)
 

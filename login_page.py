@@ -1,5 +1,8 @@
+import os
 from tkinter import *
 import tkinter.messagebox
+from PIL import Image
+import customtkinter
 import mysql.connector
 import main_page
 import register
@@ -16,6 +19,16 @@ connectiondb = mysql.connector.connect(host='localhost',
 cursordb = connectiondb.cursor()
 
 curr_user = None
+
+
+DARK_GREY = '#121212'
+MEDIUM_GREY = '#1F1B24'
+OCEAN_BLUE = '#464EB8'
+WHITE = "white"
+FONT = ("Helvetica", 17)
+BUTTON_FONT = ("Helvetica", 15)
+SMALL_FONT = ("Helvetica", 13)
+
 
 
 def login():
@@ -45,7 +58,7 @@ def login():
 
 
 def logged_destroy():
-    logged_message.destroy()
+#    logged_message.destroy()
     root2.destroy()
     root.destroy()
     global curr_user
@@ -59,19 +72,6 @@ def register_function():
 
 def failed_destroy():
     failed_message.destroy()
-
-
-def logged():
-    global logged_message
-    logged_message = Toplevel(root2)
-    logged_message.title("Welcome")
-    logged_message.geometry("500x100")
-    Label(logged_message, text="Login Successfully!... Welcome {} ".format(username_verification.get()), fg="green",
-          font="bold").pack()
-    Label(logged_message, text="").pack()
-    Button(logged_message, text="Proceed to app", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),
-           command=logged_destroy).pack()
-
 
 def failed():
     global failed_message
@@ -93,11 +93,11 @@ def login_verification():
 
     if results:
         for i in results:
-            logged()
+            global curr_user
+            curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
+                                      results[0][7], results[0][8])
+            logged_destroy()
             break
-        global curr_user
-        curr_user = ConnectedUser(results[0][2], results[0][3], results[0][4], results[0][5], results[0][6],
-                                  results[0][7], results[0][8])
     else:
         failed()
 
@@ -112,21 +112,55 @@ def Exit():
 def main_display():
     global root
     root = Tk()
-    root.config(bg="white")
+    root.config(bg=DARK_GREY)
     root.title("Login System")
-    root.geometry("500x500")
-    Label(root, text='Welcome to Log In System', bd=20, font=('arial', 20, 'bold'), relief="groove", fg="white",
-          bg="blue", width=300).pack()
-    Label(root, text="").pack()
-    Button(root, text='Log In', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
-           bg="blue", command=login).pack()
-    Label(root, text="").pack()
-    Button(root, text='Register', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
-           bg="blue", command=register_function).pack()
-    Label(root, text="").pack()
-    Button(root, text='Exit', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white",
-           bg="blue", command=Exit).pack()
-    Label(root, text="").pack()
+    root.geometry("440x500")
+
+    root.grid_rowconfigure(0, weight=2)
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_rowconfigure(2, weight=1)
+    root.grid_rowconfigure(3, weight=1)
+
+    app_name_label = customtkinter.CTkLabel(root, text="  Home management platform",
+                                                         compound="left",
+                                                         font=customtkinter.CTkFont(size=30, weight="bold"))
+    app_name_label.grid(row=0)
+    image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "theme_images")
+    login_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "login1.png")),
+                                             dark_image=Image.open(os.path.join(image_path, "login1.png")),
+                                             size=(30, 30))
+
+    login_button = customtkinter.CTkButton(root, corner_radius=0, height=40, border_spacing=10,
+                                               text="Log in",
+                                               font=customtkinter.CTkFont(size=25, weight="bold"),
+                                               fg_color="transparent", text_color=("gray10", "gray90"),
+                                               hover_color=("gray70", "gray30"),
+                                               image=login_image, anchor="w", command=login)
+    login_button.grid(row=1)
+
+    register_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "register.png")),
+                                        dark_image=Image.open(os.path.join(image_path, "register.png")),
+                                        size=(30, 30))
+
+    register_button = customtkinter.CTkButton(root, corner_radius=0, height=40, border_spacing=10,
+                                          text="Register",
+                                          font=customtkinter.CTkFont(size=25, weight="bold"),
+                                          fg_color="transparent", text_color=("gray10", "gray90"),
+                                          hover_color=("gray70", "gray30"),
+                                          image=register_image, anchor="w", command=register_function)
+    register_button.grid(row=2)
+
+    exit_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "register.png")),
+                                            dark_image=Image.open(os.path.join(image_path, "register.png")),
+                                            size=(30, 30))
+
+    exit_button = customtkinter.CTkButton(root, corner_radius=0, height=40, border_spacing=10,
+                                              text="Exit",
+                                              font=customtkinter.CTkFont(size=25, weight="bold"),
+                                              fg_color="transparent", text_color=("gray10", "gray90"),
+                                              hover_color=("gray70", "gray30"),
+                                              image=exit_image, anchor="w", command=Exit)
+    exit_button.grid(row=3)
 
 
 if __name__ == "__main__":
