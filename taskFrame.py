@@ -1,5 +1,7 @@
 import tkinter as tk
 
+import customtkinter
+
 import sendemail
 import task
 from task import Task
@@ -16,10 +18,12 @@ WHITE = "white"
 FONT = ("Helvetica", 17)
 BUTTON_FONT = ("Helvetica", 15)
 SMALL_FONT = ("Helvetica", 13)
+SEMI_BLUE = '#6C5B7B'
+DARKER_BLUE = '#355C7D'
 
 class TaskFrame():
     def callback(self):
-        new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.name_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
+        new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.optionmenu_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
         email_text = "You have a new task from: " + self.curr_user._instance.first_name + '. ' + "Task description: " + new_task.description + ". " + "Due date: " + new_task.due_date + ". " + "Level of responsibility: " + new_task.level_of_responsibility + "."
         self.email_singleton.send_email(self.get_person_email(new_task.assignee), email_text)
 
@@ -89,34 +93,66 @@ class TaskFrame():
         self.tkc = Calendar(self.root, selectmode="day", year=2023, month=1, date=1)
         self.tkc.pack(pady=10)
         def fetch_date():
-            date.config(text="Selected Date is: " + datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"))
+            date.configure(text="Selected Date is: " + datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"))
 
-        but = Button(self.root, text="Select Date", command=fetch_date, bg="black", fg='white')
-        but.pack()
-        date = Label(self.root, text="", bg='black', fg='white')
+        def optionmenu_callback(choice):
+            return choice
+
+        login_button = customtkinter.CTkButton(self.root, corner_radius=10,
+                                               text="   Select Date",
+                                               font=customtkinter.CTkFont(size=15, weight="bold"),
+                                               fg_color="transparent", text_color=("gray10", "gray90"),
+                                               hover_color=("gray70", "gray30"),
+                                               anchor="w", command=fetch_date)
+        login_button.pack()
+        # but = Button(self.root, text="Select Date", command=fetch_date, fg=DARKER_BLUE)
+        # but.pack()
+        date = customtkinter.CTkLabel(self.root, text="Date selected:",
+                                                compound="left",
+                                                font=customtkinter.CTkFont(size=15))
         date.pack(pady=20)
 
-        self.username_label = tk.Label(self.root, text="Select person:", font=FONT, bg=DARK_GREY, fg=WHITE)
+        self.username_label = customtkinter.CTkLabel(self.root, text="Select person:",
+                                                compound="left",
+                                                font=customtkinter.CTkFont(size=15))
         self.username_label.place(x=10, y=400)
-        self.task_label = tk.Label(self.root, text="Assign task:", font=FONT, bg=DARK_GREY, fg=WHITE)
+
+        self.task_label = customtkinter.CTkLabel(self.root, text="Assign task:",
+                                                     compound="left",
+                                                     font=customtkinter.CTkFont(size=15))
         self.task_label.place(x=10, y=300)
-        self.resp_label = tk.Label(self.root, text="Select responsibility:", font=FONT, bg=DARK_GREY, fg=WHITE)
+
+        self.resp_label = customtkinter.CTkLabel(self.root, text="Select responsibility:",
+                                                 compound="left",
+                                                 font=customtkinter.CTkFont(size=15))
         self.resp_label.place(x=10, y=500)
 
-        self.button = tk.Button(self.root, text="Demo Button", command=self.callback, font=FONT, bg=DARK_GREY, fg=WHITE)
-        self.button.place(x=180, y=600)
+        self.button = customtkinter.CTkButton(self.root, corner_radius=10, border_spacing=10,
+                                               text="Add task!",
+                                               font=customtkinter.CTkFont(size=25, weight="bold"),
+                                               fg_color="transparent", text_color=("gray10", "gray90"),
+                                               hover_color=("gray70", "gray30"),
+                                               anchor="w", command=self.callback)
+        self.button.place(x=250, y=600)
 
-        self.name_var = tk.StringVar()
-        self.name_var.set("Pick a person!")
+        self.optionmenu_var = customtkinter.StringVar(value="Pick a person!")  # set initial value
 
-        self.username_drop = tk.OptionMenu(self.root, self.name_var, *self.person_list)
+        self.username_drop = customtkinter.CTkOptionMenu(master=self.root,
+                                               values=self.person_list,
+                                               command=optionmenu_callback,
+                                               variable=self.optionmenu_var)
+
         self.username_drop.pack()
         self.username_drop.place(x=250, y=400)
 
-        self.resp_var = tk.StringVar()
-        self.resp_var.set("Pick responsibility!")
+        self.resp_var = customtkinter.StringVar(value="Pick responsibility!")  # set initial value
 
-        self.resp_drop = tk.OptionMenu(self.root, self.resp_var, *self.responsibilities_list)
+        self.resp_drop = customtkinter.CTkOptionMenu(master=self.root,
+                                                         values=self.responsibilities_list,
+                                                         command=optionmenu_callback,
+                                                         variable=self.resp_var)
+
+        #self.resp_drop = tk.OptionMenu(self.root, self.resp_var, *self.responsibilities_list)
         self.resp_drop.pack()
         self.resp_drop.place(x=250, y=500)
 

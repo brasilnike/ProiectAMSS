@@ -14,7 +14,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         self.title("Home management platform.py")
-        self.geometry("900x650")
+        self.geometry("900x680")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)

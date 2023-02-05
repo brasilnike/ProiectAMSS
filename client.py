@@ -15,6 +15,8 @@ WHITE = "white"
 FONT = ("Helvetica", 17)
 BUTTON_FONT = ("Helvetica", 15)
 SMALL_FONT = ("Helvetica", 13)
+SEMI_BLUE = '#6C5B7B'
+DARKER_BLUE = '#355C7D'
 
 # Creating a socket object
 # AF_INET: we are going to use IPv4 addresses
@@ -47,14 +49,14 @@ class Client:
                                          fg=WHITE)
         self.username_textbox.pack(side=tk.LEFT)
 
-        self.username_button = tk.Button(self.top_frame, text="Join", font=BUTTON_FONT, bg=OCEAN_BLUE, fg=WHITE,
+        self.username_button = tk.Button(self.top_frame, text="Join", font=BUTTON_FONT, fg=DARKER_BLUE,
                                          command=self.connect)
         self.username_button.pack(side=tk.LEFT, padx=15)
 
         self.message_textbox = tk.Entry(self.bottom_frame, font=FONT, bg=MEDIUM_GREY, fg=WHITE, width=38)
         self.message_textbox.pack(side=tk.LEFT, padx=10)
 
-        self.message_button = tk.Button(self.bottom_frame, text="Send", font=BUTTON_FONT, bg=OCEAN_BLUE, fg=WHITE,
+        self.message_button = tk.Button(self.bottom_frame, text="Send", font=BUTTON_FONT, fg=DARKER_BLUE,
                                         command=self.send_message)
         self.message_button.pack(side=tk.LEFT, padx=10)
 
