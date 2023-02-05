@@ -2,15 +2,6 @@ from enum import Enum
 
 import mysql.connector
 
-
-class Responsibilities(Enum):
-    PARENT = 1
-    PARENT_WITHOUT_DRIVING_LICENSE = 2
-    OVER_18_WITH_DRIVING_LICENSE = 3
-    OVER_18_WITHOUT_DRIVING_LICENSE = 4
-    KID = 5
-
-
 class Task:
     def __init__(self, id, assignor, assignee, description, due_date, is_Complete, level_of_responsibility):
         self.id = id
@@ -24,7 +15,7 @@ class Task:
     @classmethod
     def create_task(cls, assignor, assignee, description, due_date, is_Complete, level_of_responsibility):
         connection = mysql.connector.connect(
-            host="localhost", user="root", passwd="1q2w3e", database="logindb"
+            host="localhost", user="root", passwd="admin", database="logindb"
         )
 
         cursor = connection.cursor()
@@ -40,7 +31,7 @@ class Task:
     @classmethod
     def get_task(cls, task_id):
         connection = mysql.connector.connect(
-            host="localhost", user="root", passwd="1q2w3e", database="logindb"
+            host="localhost", user="root", passwd="admin", database="logindb"
         )
 
         cursor = connection.cursor()

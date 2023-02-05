@@ -2,13 +2,6 @@ from abc import abstractmethod
 from enum import Enum
 
 
-class Responsibilities(Enum):
-    PARENT = 1
-    PARENT_WITHOUT_DRIVING_LICENSE = 2
-    OVER_18_WITH_DRIVING_LICENSE = 3
-    OVER_18_WITHOUT_DRIVING_LICENSE = 4
-    KID = 5
-
 
 class Person:
     @abstractmethod
@@ -20,6 +13,7 @@ class Person:
         self.responsibilities = responsibilities
         self.gender = gender
         self.age = age
-
-    #def can_handle(self, task):
-    #    pass
+    def can_handle(self, task):
+        if task.level_of_responsibility == "Kid":
+            return True
+        return False

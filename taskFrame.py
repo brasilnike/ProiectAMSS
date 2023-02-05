@@ -1,15 +1,16 @@
 import tkinter as tk
 
 import customtkinter
-
+from tkinter import messagebox
 import sendemail
 import task
+from connected_user import ConnectedUser
 from task import Task
 from tkinter import *
 from tkcalendar import Calendar
 import mysql.connector
 from datetime import datetime
-import json
+
 
 DARK_GREY = '#121212'
 MEDIUM_GREY = '#1F1B24'
@@ -22,8 +23,18 @@ SEMI_BLUE = '#6C5B7B'
 DARKER_BLUE = '#355C7D'
 
 class TaskFrame():
-    def callback(self):
-        new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.optionmenu_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
+    def check_responbility(self):
+        assignee_person = self.get_person(self.optionmenu_var.get())
+        new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name),
+                                    self.get_person_id(self.optionmenu_var.get()), self.clicked.get(),
+                                    datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False,
+                                    self.resp_var.get())
+        if assignee_person._instance.can_handle(new_task) == True:
+            self.callback(new_task)
+        else:
+            messagebox.showwarning("Warning", "Task is not compatible with the person you selected!")
+    def callback(self, new_task):
+        #new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.optionmenu_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
         email_text = "You have a new task from: " + self.curr_user._instance.first_name + '. ' + "Task description: " + new_task.description + ". " + "Due date: " + new_task.due_date + ". " + "Level of responsibility: " + new_task.level_of_responsibility + "."
         self.email_singleton.send_email(self.get_person_email(new_task.assignee), email_text)
 
@@ -31,7 +42,7 @@ class TaskFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT PersonID FROM person WHERE first_name = %s"
         cursor.execute(query, [first_name])
@@ -40,11 +51,26 @@ class TaskFrame():
         conn.close()
         return person_id
 
+    def get_person(self, first_name):
+        conn = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='admin')
+        cursor = conn.cursor()
+        query = "SELECT * FROM person WHERE first_name = %s"
+        cursor.execute(query, [first_name])
+        person = cursor.fetchall()
+        curr_user = ConnectedUser(person[0][3], person[0][4], person[0][5], person[0][6], person[0][7],
+                                  person[0][8], person[0][9])
+        cursor.close()
+        conn.close()
+        return curr_user
+
     def get_person_email(self, person_id):
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT email FROM Person WHERE PersonID = %s"
         cursor.execute(query, [person_id])
@@ -54,14 +80,11 @@ class TaskFrame():
         return email
 
     def select_names(self):
-        # Connect to the database
         cnx = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = cnx.cursor()
-
-        # Select all names from the Persons table
         query = "SELECT first_name FROM person"
         cursor.execute(query)
         names = cursor.fetchall()
@@ -105,8 +128,6 @@ class TaskFrame():
                                                hover_color=("gray70", "gray30"),
                                                anchor="w", command=fetch_date)
         login_button.pack()
-        # but = Button(self.root, text="Select Date", command=fetch_date, fg=DARKER_BLUE)
-        # but.pack()
         date = customtkinter.CTkLabel(self.root, text="Date selected:",
                                                 compound="left",
                                                 font=customtkinter.CTkFont(size=15))
@@ -132,7 +153,7 @@ class TaskFrame():
                                                font=customtkinter.CTkFont(size=25, weight="bold"),
                                                fg_color="transparent", text_color=("gray10", "gray90"),
                                                hover_color=("gray70", "gray30"),
-                                               anchor="w", command=self.callback)
+                                               anchor="w", command=self.check_responbility)
         self.button.place(x=250, y=600)
 
         self.optionmenu_var = customtkinter.StringVar(value="Pick a person!")  # set initial value
@@ -151,8 +172,6 @@ class TaskFrame():
                                                          values=self.responsibilities_list,
                                                          command=optionmenu_callback,
                                                          variable=self.resp_var)
-
-        #self.resp_drop = tk.OptionMenu(self.root, self.resp_var, *self.responsibilities_list)
         self.resp_drop.pack()
         self.resp_drop.place(x=250, y=500)
 

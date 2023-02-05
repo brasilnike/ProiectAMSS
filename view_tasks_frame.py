@@ -18,7 +18,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT * FROM task"
         cursor.execute(query)
@@ -31,7 +31,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT first_name FROM person WHERE PersonID = %s"
         cursor.execute(query, [user_id])
@@ -129,7 +129,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = true WHERE id = %s"
         cursor.execute(query, [id])
@@ -169,7 +169,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = false WHERE id = %s"
         cursor.execute(query, [id])
