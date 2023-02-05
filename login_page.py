@@ -6,16 +6,12 @@ import customtkinter
 import mysql.connector
 import main_page
 import register
-from mysql.connector import Error
-from parent import Parent
-from kid import Kid
 from connected_user import ConnectedUser
 
-# connecting to the database
 connectiondb = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
 cursordb = connectiondb.cursor()
 
 curr_user = None
@@ -78,16 +74,6 @@ def login():
                                           hover_color=("gray70", "gray30"),
                                           anchor="w", command=login_verification)
     login_button.grid(row=5)
-    #
-    # Label(root2, text="Username :", fg="black", font=('arial', 12, 'bold')).pack()
-    # Entry(root2, textvariable=username_verification).pack()
-    # Label(root2, text="").pack()
-    # Label(root2, text="Password :", fg="black", font=('arial', 12, 'bold')).pack()
-    # Entry(root2, textvariable=password_verification, show="*").pack()
-    # Label(root2, text="").pack()
-    # Button(root2, text="Login", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),
-    #        command=login_verification).pack()
-    # Label(root2, text="")
 
 
 def logged_destroy():

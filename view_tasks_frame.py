@@ -2,6 +2,7 @@ from tkinter.ttk import Treeview, Combobox
 from tkinter import *
 import mysql.connector
 import pandas as pd
+import customtkinter
 
 DARK_GREY = '#121212'
 MEDIUM_GREY = '#1F1B24'
@@ -18,7 +19,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT * FROM task"
         cursor.execute(query)
@@ -31,10 +32,23 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT first_name FROM person WHERE PersonID = %s"
         cursor.execute(query, [user_id])
+        person_id = cursor.fetchone()[0]
+        cursor.close()
+        conn.close()
+        return person_id
+
+    def get_id_by_user(self, user_name):
+        conn = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='1q2w3e')
+        cursor = conn.cursor()
+        query = "SELECT PersonId FROM person WHERE first_name = %s"
+        cursor.execute(query, [user_name])
         person_id = cursor.fetchone()[0]
         cursor.close()
         conn.close()
@@ -54,7 +68,7 @@ class ViewTasksFrame():
         self.is_complete_list = []
 
         for item in self.tasks_list:
-            self.task_id_list.append(item[0])
+            self.task_id_list.append(str(item[0]))
             self.assignor_list.append(self.get_user_by_id(item[1]))
             self.assignee_list.append(self.get_user_by_id(item[2]))
             self.description_list.append(item[3])
@@ -72,29 +86,54 @@ class ViewTasksFrame():
 
         columns = list(df.columns)
         values_list = list(df["Assignee"].unique())
+        unique_persons_list = list(df["Assignee"].unique())
         values_list.append("All assignees")
 
-        self.Label1 = Label(self.root, text="   Select id of task you want to set as completed   ", bg='black',
-                            fg='white',
-                            font=SMALL_FONT)
+        self.Label1 = customtkinter.CTkLabel(self.root, text="    Select id of task you want to set as completed    ",
+                                             compound="left", font=customtkinter.CTkFont(size=15))
         self.Label1.grid(row=0, column=0)
-        self.Combo1 = Combobox(self.root, values=self.task_id_list, state="readonly", font=SMALL_FONT, width=24)
+        self.optionmenu_var1 = customtkinter.StringVar(value="Pick an id!")
+        self.Combo1 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list, command=self.select_id,
+                                                  variable=self.optionmenu_var1, width=260)
         self.Combo1.grid(row=0, column=1)
-        self.Combo1.bind("<<ComboboxSelected>>", self.select_id)
 
-        self.Label2 = Label(self.root, text="Select id of task you want to set as not completed", bg='black',
-                            fg='white', font=SMALL_FONT)
+        self.Label2 = customtkinter.CTkLabel(self.root, text=" Select id of task you want to set as not completed ",
+                                             compound="left", font=customtkinter.CTkFont(size=15))
         self.Label2.grid(row=1, column=0)
-        self.Combo2 = Combobox(self.root, values=self.task_id_list, state="readonly", font=SMALL_FONT, width=24)
+        self.optionmenu_var2 = customtkinter.StringVar(value="Pick an id!")
+        self.Combo2 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list,
+                                                  command=self.select_id_invers, variable=self.optionmenu_var2,
+                                                  width=260)
         self.Combo2.grid(row=1, column=1)
-        self.Combo2.bind("<<ComboboxSelected>>", self.select_id_invers)
 
-        self.Label = Label(self.root, text="                             Filter by:                              ",
-                           bg='black', fg='white', font=SMALL_FONT)
-        self.Label.grid(row=2, column=0)
-        self.Combo = Combobox(self.root, values=values_list, state="readonly", font=SMALL_FONT, width=24)
-        self.Combo.grid(row=2, column=1)
-        self.Combo.bind("<<ComboboxSelected>>", self.select_assignee)
+        self.Label3 = customtkinter.CTkLabel(self.root,
+                                             text="Id of task for which you want to change assignee",
+                                             compound="left", font=customtkinter.CTkFont(size=15))
+        self.Label3.grid(row=2, column=0)
+        self.optionmenu_var3 = customtkinter.StringVar(value="Pick an id!")
+        self.Combo3 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list,
+                                                  variable=self.optionmenu_var3,
+                                                  width=260)
+        self.Combo3.grid(row=2, column=1)
+
+        self.Label4 = customtkinter.CTkLabel(self.root,
+                                             text="New assignee",
+                                             compound="left", font=customtkinter.CTkFont(size=15))
+        self.Label4.grid(row=3, column=0)
+        self.optionmenu_var4 = customtkinter.StringVar(value="Pick a new assignee!")
+        self.Combo4 = customtkinter.CTkOptionMenu(master=self.root, values=unique_persons_list,
+                                                  command=self.new_assignee_to_task, variable=self.optionmenu_var4,
+                                                  width=260)
+        self.Combo4.grid(row=3, column=1)
+
+        self.Label = customtkinter.CTkLabel(self.root,
+                                            text="                              Filter by:                               ",
+                                            compound="left", font=customtkinter.CTkFont(size=15))
+        self.Label.grid(row=4, column=0)
+        self.optionmenu_var = customtkinter.StringVar(value="Pick an assignee!")
+        self.Combo = customtkinter.CTkOptionMenu(master=self.root, values=values_list,
+                                                 command=self.select_assignee, variable=self.optionmenu_var, width=260)
+        self.Combo.grid(row=4, column=1)
 
         self.tree["columns"] = columns
         self.tree.column("Task id", width=7)
@@ -102,10 +141,10 @@ class ViewTasksFrame():
         self.tree.column("Assignee", width=7)
         self.tree.column("Description", width=40)
         self.tree.column("Due date", width=7)
-        self.tree.column("Is complete", width=7)
+        self.tree.column("Is complete", width=1)
         self.tree.column("#0", width=2)
         # self.tree.pack(expand=TRUE, fill=BOTH)
-        self.tree.grid(row=3, column=0, columnspan=2, sticky=NSEW)
+        self.tree.grid(row=5, column=0, columnspan=2, sticky=NSEW)
 
         for i in columns:
             self.tree.column(i, anchor="w")
@@ -129,7 +168,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = true WHERE id = %s"
         cursor.execute(query, [id])
@@ -169,7 +208,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = false WHERE id = %s"
         cursor.execute(query, [id])
@@ -203,3 +242,46 @@ class ViewTasksFrame():
                            })
         cursor.close()
         conn.close()
+
+    def new_assignee_to_task(self, event=None):
+        task_id = self.Combo3.get()
+        person_name = self.Combo4.get()
+        person_id = self.get_id_by_user(person_name)
+        if task_id != "Pick an id!":
+            conn = mysql.connector.connect(host='localhost',
+                                           database='logindb',
+                                           user='root',
+                                           password='1q2w3e')
+            cursor = conn.cursor()
+            query = "UPDATE task SET assignee = %s WHERE id = %s"
+            cursor.execute(query, [person_id, task_id])
+            conn.commit()
+            self.tasks_list.clear()
+            self.task_id_list.clear()
+            self.assignor_list.clear()
+            self.assignee_list.clear()
+            self.description_list.clear()
+            self.due_date_list.clear()
+            self.is_complete_list.clear()
+
+            self.tasks_list = self.get_tasks_list()
+
+            for item in self.tasks_list:
+                self.task_id_list.append(item[0])
+                self.assignor_list.append(self.get_user_by_id(item[1]))
+                self.assignee_list.append(self.get_user_by_id(item[2]))
+                self.description_list.append(item[3])
+                self.due_date_list.append(item[4])
+                self.is_complete_list.append(item[5])
+
+            global df
+            df = df[0:0]
+            df = pd.DataFrame({"Task id": self.task_id_list,
+                               "Assignor": self.assignor_list,
+                               "Assignee": self.assignee_list,
+                               "Description": self.description_list,
+                               "Due date": self.due_date_list,
+                               "Is complete": self.is_complete_list,
+                               })
+            cursor.close()
+            conn.close()

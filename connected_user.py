@@ -7,7 +7,7 @@ class ConnectedUser:
 
     def __init__(self, first_name, last_name, age, email, phone_number, gender, responsibilities):
         if self._instance is None:
-            if responsibilities == "Parent":
+            if responsibilities == "Parent" or responsibilities == "Parent without driving license":
                 self._instance = Parent(first_name, last_name, age, email, phone_number, gender, responsibilities)
             else:
                 self._instance = Kid(first_name, last_name, age, email, phone_number, gender, responsibilities)

@@ -18,9 +18,6 @@ SMALL_FONT = ("Helvetica", 13)
 SEMI_BLUE = '#6C5B7B'
 DARKER_BLUE = '#355C7D'
 
-# Creating a socket object
-# AF_INET: we are going to use IPv4 addresses
-# SOCK_STREAM: we are using TCP packets for communication
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
