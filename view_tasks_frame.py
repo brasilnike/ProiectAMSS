@@ -83,8 +83,7 @@ class ViewTasksFrame():
         self.Combo1.bind("<<ComboboxSelected>>", self.select_id)
 
         self.Label2 = Label(self.root, text="Select id of task you want to set as not completed", bg='black',
-                            fg='white',
-                            font=SMALL_FONT)
+                            fg='white', font=SMALL_FONT)
         self.Label2.grid(row=1, column=0)
         self.Combo2 = Combobox(self.root, values=self.task_id_list, state="readonly", font=SMALL_FONT, width=24)
         self.Combo2.grid(row=1, column=1)
@@ -127,7 +126,6 @@ class ViewTasksFrame():
 
     def select_id(self, event=None):
         id = self.Combo1.get()
-        print(id)
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
@@ -156,7 +154,6 @@ class ViewTasksFrame():
 
         global df
         df = df[0:0]
-        print(df)
         df = pd.DataFrame({"Task id": self.task_id_list,
                            "Assignor": self.assignor_list,
                            "Assignee": self.assignee_list,
@@ -168,8 +165,7 @@ class ViewTasksFrame():
         conn.close()
 
     def select_id_invers(self, event=None):
-        id = self.Combo1.get()
-        print(id)
+        id = self.Combo2.get()
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
@@ -198,7 +194,6 @@ class ViewTasksFrame():
 
         global df
         df = df[0:0]
-        print(df)
         df = pd.DataFrame({"Task id": self.task_id_list,
                            "Assignor": self.assignor_list,
                            "Assignee": self.assignee_list,
