@@ -15,7 +15,7 @@ from connected_user import ConnectedUser
 connectiondb = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
 cursordb = connectiondb.cursor()
 
 curr_user = None
@@ -35,30 +35,62 @@ def login():
     global root2
     root2 = Toplevel(root)
     root2.title("Account Login")
-    root2.geometry("450x300")
-    root2.config(bg="white")
+    root2.geometry("440x500")
+    root2.config(bg=MEDIUM_GREY)
+    root2.grid_rowconfigure(0, weight=3)
+    root2.grid_rowconfigure(1, weight=1)
+    root2.grid_rowconfigure(2, weight=2)
+    root2.grid_rowconfigure(3, weight=1)
+    root2.grid_rowconfigure(4, weight=2)
+    root2.grid_rowconfigure(5, weight=2)
 
     global username_verification
     global password_verification
-    Label(root2, text='Please Enter your Account Details', bd=5, font=('arial', 12, 'bold'), relief="groove",
-          fg="white",
-          bg="blue", width=300).pack()
+
+    app_name_label = customtkinter.CTkLabel(root2, text="  Please Enter your Account Details",
+                                            compound="left",
+                                            font=customtkinter.CTkFont(size=25, weight="bold"))
+    app_name_label.grid(row=0)
+
     username_verification = StringVar()
     password_verification = StringVar()
-    Label(root2, text="").pack()
-    Label(root2, text="Username :", fg="black", font=('arial', 12, 'bold')).pack()
-    Entry(root2, textvariable=username_verification).pack()
-    Label(root2, text="").pack()
-    Label(root2, text="Password :", fg="black", font=('arial', 12, 'bold')).pack()
-    Entry(root2, textvariable=password_verification, show="*").pack()
-    Label(root2, text="").pack()
-    Button(root2, text="Login", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),
-           command=login_verification).pack()
-    Label(root2, text="")
+
+    user_name_label = customtkinter.CTkLabel(root2, text="Username:",
+                                            compound="left",
+                                            font=customtkinter.CTkFont(size=15))
+    user_name_label.grid(row=1, sticky="s")
+
+    user_name_textbox = customtkinter.CTkEntry(root2, height=30, textvariable=username_verification)
+    user_name_textbox.grid(row=2, sticky="n")
+
+    password_label = customtkinter.CTkLabel(root2, text="Password:",
+                                             compound="left",
+                                             font=customtkinter.CTkFont(size=15))
+    password_label.grid(row=3, sticky="s")
+
+    password_textbox = customtkinter.CTkEntry(root2, height=30, textvariable=password_verification, show="*")
+    password_textbox.grid(row=4, sticky="n")
+
+    login_button = customtkinter.CTkButton(root2, corner_radius=0, height=40, border_spacing=10,
+                                          text="   Login",
+                                          font=customtkinter.CTkFont(size=25, weight="bold"),
+                                          fg_color="transparent", text_color=("gray10", "gray90"),
+                                          hover_color=("gray70", "gray30"),
+                                          anchor="w", command=login_verification)
+    login_button.grid(row=5)
+    #
+    # Label(root2, text="Username :", fg="black", font=('arial', 12, 'bold')).pack()
+    # Entry(root2, textvariable=username_verification).pack()
+    # Label(root2, text="").pack()
+    # Label(root2, text="Password :", fg="black", font=('arial', 12, 'bold')).pack()
+    # Entry(root2, textvariable=password_verification, show="*").pack()
+    # Label(root2, text="").pack()
+    # Button(root2, text="Login", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),
+    #        command=login_verification).pack()
+    # Label(root2, text="")
 
 
 def logged_destroy():
-#    logged_message.destroy()
     root2.destroy()
     root.destroy()
     global curr_user
@@ -112,7 +144,7 @@ def Exit():
 def main_display():
     global root
     root = Tk()
-    root.config(bg=DARK_GREY)
+    root.config(bg=MEDIUM_GREY)
     root.title("Login System")
     root.geometry("440x500")
 

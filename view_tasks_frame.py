@@ -10,7 +10,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT * FROM task"
         cursor.execute(query)
@@ -23,7 +23,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT first_name FROM person WHERE PersonID = %s"
         cursor.execute(query, [user_id])
@@ -66,6 +66,12 @@ class ViewTasksFrame():
         self.Combo.pack()
         self.Combo.bind("<<ComboboxSelected>>", self.select_assignee)
         self.tree["columns"] = columns
+        self.tree.column("Assignor", width=7)
+        self.tree.column("Assignee", width=7)
+        self.tree.column("Description", width=40)
+        self.tree.column("Due date", width=7)
+        self.tree.column("Is complete", width=7)
+        self.tree.column("#0", width=2)
         self.tree.pack(expand=TRUE, fill=BOTH)
 
         for i in columns:

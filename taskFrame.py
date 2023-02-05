@@ -27,7 +27,7 @@ class TaskFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT PersonID FROM person WHERE first_name = %s"
         cursor.execute(query, [first_name])
@@ -54,7 +54,7 @@ class TaskFrame():
         cnx = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = cnx.cursor()
 
         # Select all names from the Persons table

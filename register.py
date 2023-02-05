@@ -37,7 +37,7 @@ def register_page(root):
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
 
     def Exit():
