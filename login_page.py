@@ -10,9 +10,9 @@ from connected_user import ConnectedUser
 
 # connecting to the database
 connectiondb = mysql.connector.connect(host='localhost',
-                                       database='logindb',
-                                       user='root',
-                                       password='1q2w3e')
+                                       database='amss',
+                                       user='user',
+                                       password='Password1!')
 cursordb = connectiondb.cursor()
 
 curr_user = None
@@ -87,7 +87,7 @@ def failed():
 def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
-    sql = "select * from usertable where username = %s and pass_user = %s"
+    sql = "select * from Person where username = %s and user_password = %s"
     cursordb.execute(sql, [(user_verification), (pass_verification)])
     results = cursordb.fetchall()
 
