@@ -20,7 +20,7 @@ my_connect = mysql.connector.connect(host='localhost',
 my_conn = my_connect.cursor()
 
 
-def update_desc(personid,title,new_desc):
+def update_desc(title,new_desc):
 
     my_conn.execute("UPDATE Journal SET description='"+new_desc+"' where title='"+title+"'")
     print("New desc is"+new_desc)

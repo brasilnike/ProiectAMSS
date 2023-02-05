@@ -288,7 +288,7 @@ class ViewTasksFrame():
         query = "SELECT * FROM task WHERE id = %s"
         cursor.execute(query, [task_id])
         person = cursor.fetchall()
-        curr_task = Task.create_task(person[0][1], person[0][2], person[0][3], person[0][4], person[0][5],
+        curr_task = Task(person[0][1], person[0][2], person[0][3], person[0][4], person[0][5],
                                   person[0][6])
         cursor.close()
         conn.close()

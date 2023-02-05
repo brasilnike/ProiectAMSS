@@ -25,16 +25,19 @@ DARKER_BLUE = '#355C7D'
 class TaskFrame():
     def check_responbility(self):
         assignee_person = self.get_person(self.optionmenu_var.get())
-        new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name),
+        new_task = Task(self.get_person_id(self.curr_user._instance.first_name),
                                     self.get_person_id(self.optionmenu_var.get()), self.clicked.get(),
                                     datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False,
                                     self.resp_var.get())
         if assignee_person._instance.can_handle(new_task) == True:
+            Task.create_task(self.get_person_id(self.curr_user._instance.first_name),
+                 self.get_person_id(self.optionmenu_var.get()), self.clicked.get(),
+                 datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False,
+                 self.resp_var.get())
             self.callback(new_task)
         else:
             messagebox.showwarning("Warning", "Task is not compatible with the person you selected!")
     def callback(self, new_task):
-        #new_task = Task.create_task(self.get_person_id(self.curr_user._instance.first_name), self.get_person_id(self.optionmenu_var.get()), self.clicked.get(), datetime.strptime(self.tkc.get_date(), "%m/%d/%y").strftime("%Y-%m-%d"), False, self.resp_var.get())
         email_text = "You have a new task from: " + self.curr_user._instance.first_name + '. ' + "Task description: " + new_task.description + ". " + "Due date: " + new_task.due_date + ". " + "Level of responsibility: " + new_task.level_of_responsibility + "."
         self.email_singleton.send_email(self.get_person_email(new_task.assignee), email_text)
 

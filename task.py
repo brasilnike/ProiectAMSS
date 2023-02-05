@@ -3,8 +3,7 @@ from enum import Enum
 import mysql.connector
 
 class Task:
-    def __init__(self, id, assignor, assignee, description, due_date, is_Complete, level_of_responsibility):
-        self.id = id
+    def __init__(self, assignor, assignee, description, due_date, is_Complete, level_of_responsibility):
         self.assignor = assignor
         self.assignee = assignee
         self.description = description
@@ -26,7 +25,7 @@ class Task:
         connection.commit()
         connection.close()
 
-        return cls(cursor.lastrowid, assignor, assignee, description, due_date, is_Complete, level_of_responsibility)
+        return cls(assignor, assignee, description, due_date, is_Complete, level_of_responsibility)
 
     @classmethod
     def get_task(cls, task_id):
