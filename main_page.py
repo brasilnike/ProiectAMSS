@@ -204,10 +204,13 @@ class App(customtkinter.CTk):
             self.third_frame.grid_forget()
         if name == "calendar_frame":
             self.calendar_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+             self.calendar_frame.grid_forget()
         if name == "journal_frame":
             self.journal_frame.grid(row=0, column=1, sticky="nsew")
         else:
-            self.calendar_frame.grid_forget()
+            self.journal_frame.grid_forget()
+        
 
     def home_button_event(self):
         self.select_frame_by_name("home")
