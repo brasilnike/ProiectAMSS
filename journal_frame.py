@@ -39,7 +39,7 @@ def popup(self,root,curr_user,title,desc):
                                                     fg_color="#242424"
                                                     )
         button.pack()
-        description=tk.Entry(popup,bg="#242424",width=550,fg="white")
+        description=tk.Entry(popup,bg="#242424",width=100,fg="white")
         description.insert(0,desc)
         print("desc")
         description.pack(padx=20,pady=20)

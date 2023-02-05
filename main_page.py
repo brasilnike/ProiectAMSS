@@ -34,15 +34,29 @@ class App(customtkinter.CTk):
         self.chat_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "chat_dark.png")),
                                                  dark_image=Image.open(os.path.join(image_path, "chat_light.png")),
                                                  size=(20, 20))
+
+        light_img = Image.open(os.path.join(image_path, "journalTransparent.png"))
+        dark_img = Image.open(os.path.join(image_path, "journalTransparent.png"))
+
+        if light_img.size != dark_img.size:
+            size = max(light_img.size, dark_img.size)
+            light_img = light_img.resize(size)
+            dark_img = dark_img.resize(size)
+
         self.add_user_image = customtkinter.CTkImage(
             light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
             dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
-        self.journal_image = customtkinter.CTkImage(
-            light_image=Image.open(os.path.join(image_path, "journal_dark.png")),
-            dark_image=Image.open(os.path.join(image_path, "journal_light.png")), size=(20, 20))
-        self.view_task_image = customtkinter.CTkImage(
-            light_image=Image.open(os.path.join(image_path, "view_task_dark.png")),
-            dark_image=Image.open(os.path.join(image_path, "view_task_light.png")), size=(20, 20))
+        self.journal_image = customtkinter.CTkImage(light_image=light_img, dark_image=dark_img, size=(20, 20))
+
+        light_img = Image.open(os.path.join(image_path, "journalWhite.png"))
+        dark_img = Image.open(os.path.join(image_path, "journalWhite.png"))
+
+        if light_img.size != dark_img.size:
+            size = max(light_img.size, dark_img.size)
+            light_img = light_img.resize(size)
+            dark_img = dark_img.resize(size)
+
+        self.view_task_image = customtkinter.CTkImage(light_image=dark_img, dark_image=dark_img, size=(20, 20))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)

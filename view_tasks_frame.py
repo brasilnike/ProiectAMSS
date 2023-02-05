@@ -1,8 +1,12 @@
+from tkinter import messagebox
 from tkinter.ttk import Treeview, Combobox
 from tkinter import *
 import mysql.connector
 import pandas as pd
 import customtkinter
+
+from connected_user import ConnectedUser
+from task import Task
 
 DARK_GREY = '#121212'
 MEDIUM_GREY = '#1F1B24'
@@ -45,7 +49,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='1q2w3e')
+                                       password='admin')
         cursor = conn.cursor()
         query = "SELECT PersonId FROM person WHERE first_name = %s"
         cursor.execute(query, [user_name])
@@ -57,6 +61,13 @@ class ViewTasksFrame():
     def __init__(self, root):
         super().__init__()
         self.root = root
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
+        self.root.grid_rowconfigure(2, weight=1)
+        self.root.grid_rowconfigure(3, weight=1)
+        self.root.grid_rowconfigure(4, weight=1)
+        self.root.grid_rowconfigure(5, weight=20)
+
         self.tasks_list = self.get_tasks_list()
         self.tree = Treeview(self.root)
 
@@ -66,6 +77,7 @@ class ViewTasksFrame():
         self.description_list = []
         self.due_date_list = []
         self.is_complete_list = []
+        self.responsibility_level = []
 
         for item in self.tasks_list:
             self.task_id_list.append(str(item[0]))
@@ -74,6 +86,7 @@ class ViewTasksFrame():
             self.description_list.append(item[3])
             self.due_date_list.append(item[4])
             self.is_complete_list.append(item[5])
+            self.responsibility_level.append(item[6])
 
         global df
         df = pd.DataFrame({"Task id": self.task_id_list,
@@ -82,6 +95,7 @@ class ViewTasksFrame():
                            "Description": self.description_list,
                            "Due date": self.due_date_list,
                            "Is complete": self.is_complete_list,
+                           "Responsibility level": self.responsibility_level,
                            })
 
         columns = list(df.columns)
@@ -142,9 +156,10 @@ class ViewTasksFrame():
         self.tree.column("Description", width=40)
         self.tree.column("Due date", width=7)
         self.tree.column("Is complete", width=1)
+        self.tree.column("Responsibility level", width=7)
         self.tree.column("#0", width=2)
         # self.tree.pack(expand=TRUE, fill=BOTH)
-        self.tree.grid(row=5, column=0, columnspan=2, sticky=NSEW)
+        self.tree.grid(row=5, column=0, columnspan=2, sticky=NSEW, rowspan=30)
 
         for i in columns:
             self.tree.column(i, anchor="w")
@@ -180,6 +195,7 @@ class ViewTasksFrame():
         self.description_list.clear()
         self.due_date_list.clear()
         self.is_complete_list.clear()
+        self.responsibility_level.clear()
 
         self.tasks_list = self.get_tasks_list()
 
@@ -190,6 +206,7 @@ class ViewTasksFrame():
             self.description_list.append(item[3])
             self.due_date_list.append(item[4])
             self.is_complete_list.append(item[5])
+            self.responsibility_level.append(item[6])
 
         global df
         df = df[0:0]
@@ -199,6 +216,7 @@ class ViewTasksFrame():
                            "Description": self.description_list,
                            "Due date": self.due_date_list,
                            "Is complete": self.is_complete_list,
+                           "Responsibility level":  self.responsibility_level
                            })
         cursor.close()
         conn.close()
@@ -220,6 +238,7 @@ class ViewTasksFrame():
         self.description_list.clear()
         self.due_date_list.clear()
         self.is_complete_list.clear()
+        self.responsibility_level.clear()
 
         self.tasks_list = self.get_tasks_list()
 
@@ -230,6 +249,7 @@ class ViewTasksFrame():
             self.description_list.append(item[3])
             self.due_date_list.append(item[4])
             self.is_complete_list.append(item[5])
+            self.responsibility_level.append(item[6])
 
         global df
         df = df[0:0]
@@ -239,49 +259,92 @@ class ViewTasksFrame():
                            "Description": self.description_list,
                            "Due date": self.due_date_list,
                            "Is complete": self.is_complete_list,
+                           "Responsibility level":  self.responsibility_level
                            })
         cursor.close()
         conn.close()
 
+    def get_person(self, first_name):
+        conn = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='admin')
+        cursor = conn.cursor()
+        query = "SELECT * FROM person WHERE first_name = %s"
+        cursor.execute(query, [first_name])
+        person = cursor.fetchall()
+        curr_user = ConnectedUser(person[0][3], person[0][4], person[0][5], person[0][6], person[0][7],
+                                  person[0][8], person[0][9])
+        cursor.close()
+        conn.close()
+        return curr_user
+
+    def get_task(self, task_id):
+        conn = mysql.connector.connect(host='localhost',
+                                       database='logindb',
+                                       user='root',
+                                       password='admin')
+        cursor = conn.cursor()
+        query = "SELECT * FROM task WHERE id = %s"
+        cursor.execute(query, [task_id])
+        person = cursor.fetchall()
+        curr_task = Task.create_task(person[0][1], person[0][2], person[0][3], person[0][4], person[0][5],
+                                  person[0][6])
+        cursor.close()
+        conn.close()
+        return curr_task
+
+    def check_responbility(self, assignee_person, new_task):
+        if assignee_person._instance.can_handle(new_task) == True:
+            return True
+        else:
+            return False
+
     def new_assignee_to_task(self, event=None):
-        task_id = self.Combo3.get()
-        person_name = self.Combo4.get()
-        person_id = self.get_id_by_user(person_name)
-        if task_id != "Pick an id!":
-            conn = mysql.connector.connect(host='localhost',
-                                           database='logindb',
-                                           user='root',
-                                           password='1q2w3e')
-            cursor = conn.cursor()
-            query = "UPDATE task SET assignee = %s WHERE id = %s"
-            cursor.execute(query, [person_id, task_id])
-            conn.commit()
-            self.tasks_list.clear()
-            self.task_id_list.clear()
-            self.assignor_list.clear()
-            self.assignee_list.clear()
-            self.description_list.clear()
-            self.due_date_list.clear()
-            self.is_complete_list.clear()
+        assignee_person = self.get_person(event)
+        curr_task = self.get_task(self.Combo3.get())
+        if self.check_responbility(assignee_person, curr_task) == False:
+            messagebox.showwarning("Warning", "Task is not compatible with the person you selected!")
+        else:
+            task_id = self.Combo3.get()
+            person_name = self.Combo4.get()
+            person_id = self.get_id_by_user(person_name)
+            if task_id != "Pick an id!":
+                conn = mysql.connector.connect(host='localhost',
+                                               database='logindb',
+                                               user='root',
+                                               password='admin')
+                cursor = conn.cursor()
+                query = "UPDATE task SET assignee = %s WHERE id = %s"
+                cursor.execute(query, [person_id, task_id])
+                conn.commit()
+                self.tasks_list.clear()
+                self.task_id_list.clear()
+                self.assignor_list.clear()
+                self.assignee_list.clear()
+                self.description_list.clear()
+                self.due_date_list.clear()
+                self.is_complete_list.clear()
+                self.responsibility_level.clear()
+                self.tasks_list = self.get_tasks_list()
 
-            self.tasks_list = self.get_tasks_list()
+                for item in self.tasks_list:
+                    self.task_id_list.append(item[0])
+                    self.assignor_list.append(self.get_user_by_id(item[1]))
+                    self.assignee_list.append(self.get_user_by_id(item[2]))
+                    self.description_list.append(item[3])
+                    self.due_date_list.append(item[4])
+                    self.is_complete_list.append(item[5])
+                    self.responsibility_level.append(item[6])
 
-            for item in self.tasks_list:
-                self.task_id_list.append(item[0])
-                self.assignor_list.append(self.get_user_by_id(item[1]))
-                self.assignee_list.append(self.get_user_by_id(item[2]))
-                self.description_list.append(item[3])
-                self.due_date_list.append(item[4])
-                self.is_complete_list.append(item[5])
-
-            global df
-            df = df[0:0]
-            df = pd.DataFrame({"Task id": self.task_id_list,
-                               "Assignor": self.assignor_list,
-                               "Assignee": self.assignee_list,
-                               "Description": self.description_list,
-                               "Due date": self.due_date_list,
-                               "Is complete": self.is_complete_list,
-                               })
-            cursor.close()
-            conn.close()
+                global df
+                df = df[0:0]
+                df = pd.DataFrame({"Task id": self.task_id_list,
+                                   "Assignor": self.assignor_list,
+                                   "Assignee": self.assignee_list,
+                                   "Description": self.description_list,
+                                   "Due date": self.due_date_list,
+                                   "Responsibility level":  self.responsibility_level
+                                   })
+                cursor.close()
+                conn.close()
