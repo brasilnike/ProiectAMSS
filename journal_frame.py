@@ -15,7 +15,7 @@ SMALL_FONT = ("Helvetica", 13)
 my_connect = mysql.connector.connect(host='localhost',
                                      database='logindb',
                                      user='root',
-                                     password='admin')
+                                     password='1q2w3e')
 # ###### end of connection ######
 my_conn = my_connect.cursor()
 

@@ -23,7 +23,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "SELECT * FROM task"
         cursor.execute(query)
@@ -36,7 +36,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "SELECT first_name FROM person WHERE PersonID = %s"
         cursor.execute(query, [user_id])
@@ -49,7 +49,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "SELECT PersonId FROM person WHERE first_name = %s"
         cursor.execute(query, [user_name])
@@ -107,17 +107,17 @@ class ViewTasksFrame():
                                              compound="left", font=customtkinter.CTkFont(size=15))
         self.Label1.grid(row=0, column=0)
         self.optionmenu_var1 = customtkinter.StringVar(value="Pick an id!")
-        self.Combo1 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list, command=self.select_id,
-                                                  variable=self.optionmenu_var1, width=260)
+        self.Combo1 = customtkinter.CTkComboBox(master=self.root, values=self.task_id_list, command=self.select_id,
+                                                variable=self.optionmenu_var1, width=260)
         self.Combo1.grid(row=0, column=1)
 
         self.Label2 = customtkinter.CTkLabel(self.root, text=" Select id of task you want to set as not completed ",
                                              compound="left", font=customtkinter.CTkFont(size=15))
         self.Label2.grid(row=1, column=0)
         self.optionmenu_var2 = customtkinter.StringVar(value="Pick an id!")
-        self.Combo2 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list,
-                                                  command=self.select_id_invers, variable=self.optionmenu_var2,
-                                                  width=260)
+        self.Combo2 = customtkinter.CTkComboBox(master=self.root, values=self.task_id_list,
+                                                command=self.select_id_invers, variable=self.optionmenu_var2,
+                                                width=260)
         self.Combo2.grid(row=1, column=1)
 
         self.Label3 = customtkinter.CTkLabel(self.root,
@@ -125,9 +125,9 @@ class ViewTasksFrame():
                                              compound="left", font=customtkinter.CTkFont(size=15))
         self.Label3.grid(row=2, column=0)
         self.optionmenu_var3 = customtkinter.StringVar(value="Pick an id!")
-        self.Combo3 = customtkinter.CTkOptionMenu(master=self.root, values=self.task_id_list,
-                                                  variable=self.optionmenu_var3,
-                                                  width=260)
+        self.Combo3 = customtkinter.CTkComboBox(master=self.root, values=self.task_id_list,
+                                                variable=self.optionmenu_var3,
+                                                width=260)
         self.Combo3.grid(row=2, column=1)
 
         self.Label4 = customtkinter.CTkLabel(self.root,
@@ -135,9 +135,9 @@ class ViewTasksFrame():
                                              compound="left", font=customtkinter.CTkFont(size=15))
         self.Label4.grid(row=3, column=0)
         self.optionmenu_var4 = customtkinter.StringVar(value="Pick a new assignee!")
-        self.Combo4 = customtkinter.CTkOptionMenu(master=self.root, values=unique_persons_list,
-                                                  command=self.new_assignee_to_task, variable=self.optionmenu_var4,
-                                                  width=260)
+        self.Combo4 = customtkinter.CTkComboBox(master=self.root, values=unique_persons_list,
+                                                command=self.new_assignee_to_task, variable=self.optionmenu_var4,
+                                                width=260)
         self.Combo4.grid(row=3, column=1)
 
         self.Label = customtkinter.CTkLabel(self.root,
@@ -145,7 +145,7 @@ class ViewTasksFrame():
                                             compound="left", font=customtkinter.CTkFont(size=15))
         self.Label.grid(row=4, column=0)
         self.optionmenu_var = customtkinter.StringVar(value="Pick an assignee!")
-        self.Combo = customtkinter.CTkOptionMenu(master=self.root, values=values_list,
+        self.Combo = customtkinter.CTkComboBox(master=self.root, values=values_list,
                                                  command=self.select_assignee, variable=self.optionmenu_var, width=260)
         self.Combo.grid(row=4, column=1)
 
@@ -183,7 +183,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = true WHERE id = %s"
         cursor.execute(query, [id])
@@ -216,7 +216,7 @@ class ViewTasksFrame():
                            "Description": self.description_list,
                            "Due date": self.due_date_list,
                            "Is complete": self.is_complete_list,
-                           "Responsibility level":  self.responsibility_level
+                           "Responsibility level": self.responsibility_level
                            })
         cursor.close()
         conn.close()
@@ -226,7 +226,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "UPDATE task SET is_Complete = false WHERE id = %s"
         cursor.execute(query, [id])
@@ -259,7 +259,7 @@ class ViewTasksFrame():
                            "Description": self.description_list,
                            "Due date": self.due_date_list,
                            "Is complete": self.is_complete_list,
-                           "Responsibility level":  self.responsibility_level
+                           "Responsibility level": self.responsibility_level
                            })
         cursor.close()
         conn.close()
@@ -268,7 +268,7 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "SELECT * FROM person WHERE first_name = %s"
         cursor.execute(query, [first_name])
@@ -283,13 +283,13 @@ class ViewTasksFrame():
         conn = mysql.connector.connect(host='localhost',
                                        database='logindb',
                                        user='root',
-                                       password='admin')
+                                       password='1q2w3e')
         cursor = conn.cursor()
         query = "SELECT * FROM task WHERE id = %s"
         cursor.execute(query, [task_id])
         person = cursor.fetchall()
         curr_task = Task(person[0][1], person[0][2], person[0][3], person[0][4], person[0][5],
-                                  person[0][6])
+                         person[0][6])
         cursor.close()
         conn.close()
         return curr_task
@@ -313,7 +313,7 @@ class ViewTasksFrame():
                 conn = mysql.connector.connect(host='localhost',
                                                database='logindb',
                                                user='root',
-                                               password='admin')
+                                               password='1q2w3e')
                 cursor = conn.cursor()
                 query = "UPDATE task SET assignee = %s WHERE id = %s"
                 cursor.execute(query, [person_id, task_id])
@@ -326,6 +326,7 @@ class ViewTasksFrame():
                 self.due_date_list.clear()
                 self.is_complete_list.clear()
                 self.responsibility_level.clear()
+
                 self.tasks_list = self.get_tasks_list()
 
                 for item in self.tasks_list:
@@ -344,7 +345,8 @@ class ViewTasksFrame():
                                    "Assignee": self.assignee_list,
                                    "Description": self.description_list,
                                    "Due date": self.due_date_list,
-                                   "Responsibility level":  self.responsibility_level
+                                   "Is complete": self.is_complete_list,
+                                   "Responsibility level": self.responsibility_level
                                    })
                 cursor.close()
                 conn.close()
